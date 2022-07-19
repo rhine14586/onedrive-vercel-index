@@ -65,6 +65,7 @@ const VideoPlayer: FC<{
   }
   const plyrOptions: Plyr.Options = {
     ratio: `${width ?? 16}:${height ?? 9}`,
+    fullscreen: { iosNative: true },
   }
   if (!isFlv) {
     // If the video is not in flv format, we can use the native plyr and add sources directly with the video URL
@@ -132,14 +133,6 @@ const VideoPreview: FC<{ file: OdFileObject }> = ({ file }) => {
             btnText={t('Download')}
             btnIcon="file-download"
           />
-          {/* <DownloadButton
-            onClickCallback={() =>
-              window.open(`/api/proxy?url=${encodeURIComponent(...)}`)
-            }
-            btnColor="teal"
-            btnText={t('Proxy download')}
-            btnIcon="download"
-          /> */}
           <DownloadButton
             onClickCallback={() => {
               clipboard.copy(`${getBaseUrl()}/api/raw/?path=${asPath}${hashedToken ? `&odpt=${hashedToken}` : ''}`)
@@ -167,9 +160,14 @@ const VideoPreview: FC<{ file: OdFileObject }> = ({ file }) => {
             btnImage="/players/vlc.png"
           />
           <DownloadButton
-            onClickCallback={() => window.open(`potplayer://${getBaseUrl()}/${videoUrl}`)}
+            onClickCallback={() => window.open(`potplayer://${getBaseUrl()}${videoUrl}`)}
             btnText="PotPlayer"
             btnImage="/players/potplayer.png"
+          />
+          <DownloadButton
+            onClickCallback={() => window.open(`nplayer-http://${window?.location.hostname ?? ''}${videoUrl}`)}
+            btnText="nPlayer"
+            btnImage="/players/nplayer.png"
           />
         </div>
       </DownloadBtnContainer>
